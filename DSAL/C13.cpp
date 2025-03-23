@@ -24,6 +24,10 @@ public:
     }
 
     void addEdge(string u, string v) {
+        if (landmarks.find(u) == landmarks.end() || landmarks.find(v) == landmarks.end()) {
+            cout << "Invalid landmarks! Ensure both exist before adding an edge.\n";
+            return;
+        }
         int i = landmarks[u], j = landmarks[v];
         adjList[i].push_back(j);
         adjList[j].push_back(i);
@@ -59,6 +63,10 @@ public:
     }
 
     void performDFS(string start) {
+        if (landmarks.find(start) == landmarks.end()) {
+            cout << "Invalid starting landmark!\n";
+            return;
+        }
         vector<bool> visited(nodes, false);
         cout << "DFS: ";
         DFS(landmarks[start], visited);
@@ -66,6 +74,10 @@ public:
     }
 
     void performBFS(string start) {
+        if (landmarks.find(start) == landmarks.end()) {
+            cout << "Invalid starting landmark!\n";
+            return;
+        }
         cout << "BFS: ";
         BFS(landmarks[start]);
         cout << endl;
@@ -73,22 +85,40 @@ public:
 };
 
 int main() {
-    Graph g(5);
+    int n, edges;
+    cout << "Enter number of landmarks: ";
+    cin >> n;
+    cin.ignore();
 
-    g.addLandmark(0, "College");
-    g.addLandmark(1, "Library");
-    g.addLandmark(2, "Canteen");
-    g.addLandmark(3, "Hostel");
-    g.addLandmark(4, "Playground");
+    Graph g(n);
 
-    g.addEdge("College", "Library");
-    g.addEdge("College", "Canteen");
-    g.addEdge("Library", "Hostel");
-    g.addEdge("Canteen", "Playground");
-    g.addEdge("Hostel", "Playground");
+    cout << "Enter landmark names:\n";
+    for (int i = 0; i < n; i++) {
+        string name;
+        cout << "Landmark " << i + 1 << ": ";
+        getline(cin, name);
+        g.addLandmark(i, name);
+    }
 
-    g.performDFS("College");
-    g.performBFS("College");
+    cout << "Enter number of connections (edges): ";
+    cin >> edges;
+    cin.ignore();
+
+    cout << "Enter landmark connections (Format: Landmark1 Landmark2):\n";
+    for (int i = 0; i < edges; i++) {
+        string u, v;
+        cout << "Edge " << i + 1 << ": ";
+        cin >> u >> v;
+        g.addEdge(u, v);
+    }
+
+    string start;
+    cout << "Enter starting landmark for DFS and BFS: ";
+    cin >> start;
+
+    g.performDFS(start);
+    g.performBFS(start);
 
     return 0;
 }
+

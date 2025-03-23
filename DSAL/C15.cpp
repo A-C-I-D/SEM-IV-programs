@@ -28,7 +28,7 @@ public:
 
         pq.push({0, start});
 
-        cout << "Minimum Spanning Tree Edges:\n";
+        cout << "\nMinimum Spanning Tree Edges:\n";
         while (!pq.empty()) {
             auto [cost, node] = pq.top();
             pq.pop();
@@ -49,16 +49,26 @@ public:
 };
 
 int main() {
-    Graph g(5); 
+    int n, edges, u, v, cost, start;
 
-    g.addEdge(0, 1, 10);
-    g.addEdge(0, 2, 20);
-    g.addEdge(1, 3, 30);
-    g.addEdge(2, 3, 25);
-    g.addEdge(3, 4, 15);
-    g.addEdge(1, 4, 35);
+    cout << "Enter number of offices: ";
+    cin >> n;
 
-    g.primMST(0); 
+    Graph g(n);
+
+    cout << "Enter number of connections: ";
+    cin >> edges;
+
+    cout << "Enter connections (Format: Office1 Office2 Cost):\n";
+    for (int i = 0; i < edges; i++) {
+        cin >> u >> v >> cost;
+        g.addEdge(u, v, cost);
+    }
+
+    cout << "Enter starting office for Prim's Algorithm: ";
+    cin >> start;
+
+    g.primMST(start);
 
     return 0;
 }
